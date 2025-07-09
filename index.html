@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark's Tips</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+        
+        .tip-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        
+        .tip-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        .tip-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .tip-content {
+            color: #666;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+        
+        .tip-date {
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        
+        .tip-count {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        
+        .no-tips {
+            text-align: center;
+            color: #999;
+            padding: 40px;
+            background: white;
+            border-radius: 8px;
+        }
+        
+        .info-box {
+            background: #e6f7ff;
+            border: 1px solid #91d5ff;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .load-btn {
+            background: #40a9ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        
+        .load-btn:hover {
+            background: #1890ff;
+        }
+        
+        .error {
+            background: #fff2f0;
+            border: 1px solid #ffccc7;
+            color: #cf1322;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #666;
+            padding: 20px;
+        }
+        
+        #tips-container {
+            min-height: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Mark's Tips</h1>
+        <div class="subtitle">Helpful tips and tricks by Mark</div>
+    </div>
+    
+    <div class="info-box">
+        This is a static HTML viewer for Mark's tips.<br>
+        Load the tips.json file or fetch from a server.
+        <br><br>
+        <button class="load-btn" onclick="loadLocalFile()">📁 Load Local tips.json</button>
+        <button class="load-btn" onclick="loadFromServer()">🌐 Load from Server</button>
+        <input type="file" id="fileInput" accept=".json" style="display: none;" onchange="handleFileSelect(event)">
+    </div>
+    
+    <div class="tip-count" id="tipCount">No tips loaded</div>
+    
+    <div id="tips-container">
+        <div class="no-tips">
+            Click "Load Local tips.json" to browse for the tips file<br>
+            or "Load from Server" if a server is running.
+        </div>
+    </div>
+
+    <script>
+        // Sample tips data (will be replaced when loading actual data)
+        const sampleTips = [
+            {
+                id: 1,
+                title: "Welcome to Mark's Tips!",
+                content: "This is where I'll share helpful tips and tricks I've discovered. Check back often for new content!",
+                date: "2024-01-09 10:00"
+            }
+        ];
+
+        function displayTips(tips) {
+            const container = document.getElementById('tips-container');
+            const tipCount = document.getElementById('tipCount');
+            
+            if (!tips || tips.length === 0) {
+                container.innerHTML = '<div class="no-tips">No tips found in the file.</div>';
+                tipCount.textContent = 'No tips loaded';
+                return;
+            }
+            
+            // Sort tips by date (newest first)
+            tips.sort((a, b) => {
+                const dateA = new Date(a.date || '2000-01-01');
+                const dateB = new Date(b.date || '2000-01-01');
+                return dateB - dateA;
+            });
+            
+            tipCount.textContent = `Total Tips: ${tips.length}`;
+            
+            let html = '';
+            tips.forEach(tip => {
+                html += `
+                    <div class="tip-card">
+                        <div class="tip-title">${escapeHtml(tip.title || 'Untitled')}</div>
+                        <div class="tip-content">${escapeHtml(tip.content || '')}</div>
+                        <div class="tip-date">Posted on: ${escapeHtml(tip.date || 'Unknown date')}</div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function loadLocalFile() {
+            document.getElementById('fileInput').click();
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const tips = JSON.parse(e.target.result);
+                    displayTips(tips);
+                } catch (error) {
+                    showError('Error reading file: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function loadFromServer() {
+            const container = document.getElementById('tips-container');
+            container.innerHTML = '<div class="loading">Loading tips from server...</div>';
+            
+            // Try multiple possible server locations
+            const urls = [
+                'http://localhost:8080/api/tips',
+                'http://localhost:8081/api/tips',
+                'http://localhost:5000/api/tips',
+                '/api/tips',
+                'tips.json'
+            ];
+            
+            let attempted = 0;
+            
+            function tryNextUrl() {
+                if (attempted >= urls.length) {
+                    showError('Could not connect to any server. Make sure the server is running.');
+                    return;
+                }
+                
+                fetch(urls[attempted])
+                    .then(response => {
+                        if (!response.ok) throw new Error('Server error');
+                        return response.json();
+                    })
+                    .then(tips => {
+                        displayTips(tips);
+                    })
+                    .catch(error => {
+                        attempted++;
+                        tryNextUrl();
+                    });
+            }
+            
+            tryNextUrl();
+        }
+
+        function showError(message) {
+            const container = document.getElementById('tips-container');
+            container.innerHTML = `<div class="error">${message}</div>`;
+        }
+
+        // Check if tips.json exists in the same directory (for GitHub Pages)
+        window.addEventListener('load', function() {
+            fetch('tips.json')
+                .then(response => {
+                    if (response.ok) return response.json();
+                    throw new Error('No local tips.json found');
+                })
+                .then(tips => {
+                    displayTips(tips);
+                })
+                .catch(() => {
+                    // File doesn't exist or can't be loaded - that's okay
+                    console.log('No tips.json found in same directory');
+                });
+        });
+    </script>
+</body>
+</html>
