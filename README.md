@@ -1,34 +1,50 @@
 # Mark's Tips Application
 
-A simple web application for sharing tips and tricks, with password-protected posting.
+A web application for sharing tips and tricks, with separate interfaces for posting and viewing.
+
+## Two Versions Available
+
+### 1. Public Viewer (public_viewer.py)
+- **No password required** - Anyone can view tips
+- Auto-refreshes every 30 seconds
+- Perfect for sharing with others
+- Run with: `python3 public_viewer.py`
+- Access at: http://localhost:8081
+
+### 2. Full Application (simple_tips.py)
+- View tips + password-protected posting
+- Only Mark can post new tips (password: skous59)
+- Run with: `python3 simple_tips.py`
+- Access at: http://localhost:8080
 
 ## Features
 
-- View all tips posted by Mark
-- Password-protected tip posting (password: skous59)
-- Clean, modern interface
-- Tips are stored locally in JSON format
-- Newest tips appear first
+- 📖 View all tips posted by Mark
+- 🔐 Password-protected tip posting
+- 🎨 Clean, modern interface
+- 💾 Tips stored in JSON format
+- 🔄 Newest tips appear first
+- 📡 API endpoint at `/api/tips`
 
-## Installation
+## Quick Start
 
-1. Install Flask:
+### For Viewers (No Password Needed):
 ```bash
-pip install flask
+python3 public_viewer.py
 ```
+Then open http://localhost:8081
 
-2. Run the application:
+### For Mark (To Post Tips):
 ```bash
-python tips_app.py
+python3 simple_tips.py
 ```
+Then open http://localhost:8080
 
-3. Open your browser to http://localhost:5000
+## How It Works
 
-## Usage
-
-- **View Tips**: Just visit the homepage to see all tips
-- **Add Tips**: Click "Add New Tip" and enter the password (skous59)
-- **API Access**: Get tips as JSON at http://localhost:5000/api/tips
+1. **Tips Storage**: All tips are saved in `tips.json`
+2. **Public Access**: Anyone can run `public_viewer.py` to see tips
+3. **Posting Access**: Only people with the password can post via `simple_tips.py`
 
 ## Password
 
