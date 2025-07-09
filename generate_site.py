@@ -32,17 +32,17 @@ def generate_60s_site():
     if not tips_html:
         tips_html = '''
         <div class="tip-card">
-            <h2 class="tip-title">No tips yet!</h2>
-            <div class="tip-content">Stay groovy, tips are coming soon!</div>
+            <h2 class="tip-title">Nog geen tips!</h2>
+            <div class="tip-content">Blijf groovy, tips komen eraan!</div>
         </div>
         '''
     
     html_content = f'''<!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mark's Groovy Tips - Peace, Love & Knowledge</title>
+    <title>Mark's Groovy Tips - Vrede, Liefde & Kennis</title>
     <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {{
@@ -310,12 +310,12 @@ def generate_60s_site():
             <div class="peace-sign">☮</div>
             <h1 class="main-title">Mark's Groovy Tips</h1>
             <div class="peace-sign">☮</div>
-            <p class="subtitle">✨ Peace, Love & Knowledge ✨</p>
-            <p class="subtitle">Far out tips for hip cats!</p>
+            <p class="subtitle">✨ Vrede, Liefde & Kennis ✨</p>
+            <p class="subtitle">Vette tips voor coole mensen!</p>
         </div>
         
         <div class="tip-counter">
-            🎯 Total Groovy Tips: {len(tips)} 🎯
+            🎯 Totaal Groovy Tips: {len(tips)} 🎯
         </div>
         
         <div class="tips-container">
@@ -323,9 +323,9 @@ def generate_60s_site():
         </div>
         
         <div class="footer">
-            <p>Keep on truckin'! ✌️</p>
-            <p>Made with 💜 in the spirit of the 60s</p>
-            <p>Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M')}</p>
+            <p>Blijf doorgaan! ✌️</p>
+            <p>Gemaakt met 💜 in de geest van de jaren 60</p>
+            <p>Laatst bijgewerkt: {datetime.now().strftime('%d-%m-%Y %H:%M')}</p>
         </div>
     </div>
     
@@ -337,9 +337,9 @@ def generate_60s_site():
     with open('index.html', 'w', encoding='utf-8') as f:
         f.write(html_content)
     
-    print("✨ Groovy site generated! ✨")
-    print(f"📝 Total tips: {len(tips)}")
-    print("🌈 Open index.html to see your far out tips page!")
+    print("✨ Groovy site gegenereerd! ✨")
+    print(f"📝 Totaal tips: {len(tips)}")
+    print("🌈 Open index.html om je vette tips pagina te zien!")
 
 if __name__ == '__main__':
     generate_60s_site()
